@@ -1,0 +1,32 @@
+<html>
+<head>
+     <script src="/Users/cbarrows/.julia/packages/PlotlyJS/AhkM5/assets/plotly-latest.min.js"></script>
+</head>
+<body>
+     <script>
+    gd = (function() {
+  var WIDTH_IN_PERCENT_OF_PARENT = 100;
+  var HEIGHT_IN_PERCENT_OF_PARENT = 100;
+  var gd = Plotly.d3.select('body')
+    .append('div').attr("id", "9b89c1ce-018e-4538-8381-2857afdc3416")
+    .style({
+      width: WIDTH_IN_PERCENT_OF_PARENT + '%',
+      'margin-left': (100 - WIDTH_IN_PERCENT_OF_PARENT) / 2 + '%',
+      height: HEIGHT_IN_PERCENT_OF_PARENT + 'vh',
+      'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
+    })
+    .node();
+  var plot_json = {"layout":{"margin":{"l":50,"b":50,"r":50,"t":60}},"data":[{"y":[33.0,66.0,132.0,264.0,528.0,1056.0,2112.0,4224.0,8448.0,16896.0,33792.0],"type":"scatter","name":"Infections","x":["2020-03-12","2020-03-18","2020-03-24","2020-03-30","2020-04-05","2020-04-11","2020-04-17","2020-04-23","2020-04-29","2020-05-05","2020-05-11"]},{"y":[3.3000000000000003,6.6000000000000005,13.200000000000001,26.400000000000002,52.800000000000004,105.60000000000001,211.20000000000002,422.40000000000003,844.8000000000001,1689.6000000000001,3379.2000000000003],"type":"scatter","name":"Hospitalizations","x":["2020-03-12","2020-03-18","2020-03-24","2020-03-30","2020-04-05","2020-04-11","2020-04-17","2020-04-23","2020-04-29","2020-05-05","2020-05-11"]},{"y":[0.99,1.98,3.96,7.92,15.84,31.68,63.36,126.72,253.44,506.88,1013.76],"type":"scatter","name":"Deaths","x":["2020-03-12","2020-03-18","2020-03-24","2020-03-30","2020-04-05","2020-04-11","2020-04-17","2020-04-23","2020-04-29","2020-05-05","2020-05-11"]}]};
+  var data = plot_json.data;
+  var layout = plot_json.layout;
+  Plotly.newPlot(gd, data, layout);
+  window.onresize = function() {
+    Plotly.Plots.resize(gd);
+  };
+  return gd;
+})();
+
+ </script>
+
+</body>
+</html>
