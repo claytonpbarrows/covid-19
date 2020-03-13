@@ -1,5 +1,6 @@
 # # COVID-19 Analysis
-# ## Checkout the webpage with live plots [here](https://github.com/claytonpbarrows/covid-19).
+# ## Checkout the [webpage with live plots](https://claytonpbarrows.github.io/covid-19/), and if you're intereested, [the github repository](https://github.com/claytonpbarrows/covid-19/), or [the notebook](https://nbviewer.jupyter.org/github/claytonpbarrows/covid-19/blob/master/covid-19.ipynb). And finally, if you want to run the notebook interactively through binder (slow), you can do so [here]((https://mybinder.org/v2/gh/claytonpbarrows/covid-19/master/).
+
 # *This is a very simple estimate of COVID-19 impacts, and I don't claim to know anything other than how to produce a nice figure and do simple math*
 using Dates
 using PlotlyJS
