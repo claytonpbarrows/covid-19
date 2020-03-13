@@ -1,25 +1,22 @@
-```@meta
-EditURL = "<unknown>/covid-19.jl"
-```
-
 # COVID-19 Analysis
+## Checkout the webpage with live plots [here](https://github.com/claytonpbarrows/covid-19).
 *This is a very simple estimate of COVID-19 impacts, and I don't claim to know anything other than how to produce a nice figure and do simple math*
 
-```@example covid-19
+```julia
 using Dates
 using PlotlyJS
 using DataFrames
 using CSV
 ```
 
-```@example covid-19
+```julia
 function cases(days::Day, current_cases, doubling_time)
     dbl_period = days/doubling_time
     return current_cases * (2 ^ dbl_period)
 end
 ```
 
-```@example covid-19
+```julia
 function plot_covid(days, current_cases, doubling_time = Day(7), hosp_rate = 0.1, death_rate = 0.03)
     td = today()
     dates = td:doubling_time:(td+days)
@@ -38,7 +35,7 @@ end
 
 Let's use data from the [WHO]("http://cowid.netlify.com/data/full_data.csv") to get data for the whole world (including the U.S.).
 
-```@example covid-19
+```julia
 who_data_url = "http://cowid.netlify.com/data/full_data.csv"
 who_data_file = download(who_data_url)
 who_data = DataFrame(CSV.read(who_data_file))
@@ -46,7 +43,7 @@ who_data = DataFrame(CSV.read(who_data_file))
 
 Also, JHU has put together some more detailed data
 
-```@example covid-19
+```julia
 jh_data_url = "https://data.humdata.org/hxlproxy/api/data-preview.csv?url=https%3A%2F%2Fraw.githubusercontent.com%2FCSSEGISandData%2FCOVID-19%2Fmaster%2Fcsse_covid_19_data%2Fcsse_covid_19_time_series%2Ftime_series_19-covid-Confirmed.csv"
 jh_data_file = download(jh_data_url)
 jh_data = DataFrame(CSV.read(jh_data_file))
@@ -55,7 +52,7 @@ jh_data = DataFrame(CSV.read(jh_data_file))
 ## Colorado
 data processing
 
-```@example covid-19
+```julia
 co_data = jh_data[.!ismissing.(jh_data[!,Symbol("Province/State")]) .& (jh_data[!,Symbol("Province/State")].=="Colorado"),:]
 co_data = melt(co_data,names(co_data)[1:4],variable_name = :Date, value_name =:cases)
 co_data.Date = Date.(String.(co_data.Date),"m/d/y") + Year(2000)
@@ -68,7 +65,7 @@ Plot the colorado projection using the most recent case count
 ## US
 data processing
 
-```@example covid-19
+```julia
 us_data = jh_data[.!ismissing.(jh_data[!,Symbol("Country/Region")]) .& (jh_data[!,Symbol("Country/Region")].=="US"),:]
 us_data = us_data[.!occursin.(",", us_data[!,Symbol("Province/State")]), :]
 us_data = melt(us_data,names(us_data)[1:4],variable_name = :Date, value_name =:cases)

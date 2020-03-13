@@ -1,4 +1,5 @@
 # # COVID-19 Analysis
+# ## Checkout the webpage with live plots [here](https://github.com/claytonpbarrows/covid-19).
 # *This is a very simple estimate of COVID-19 impacts, and I don't claim to know anything other than how to produce a nice figure and do simple math*
 using Dates
 using PlotlyJS
@@ -70,5 +71,5 @@ savefig(us, "US.html", :embed) #src
 
 using Literate #src
 Literate.notebook("covid-19.jl", ".") #src
-Literate.markdown("covid-19.jl", ".") #src
+Literate.markdown("covid-19.jl", ".", documenter = false) #src
 mv("covid-19.md", "README.md", force=true) #src
