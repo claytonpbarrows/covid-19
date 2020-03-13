@@ -59,7 +59,7 @@ data processing
 co_data = jh_data[.!ismissing.(jh_data[!,Symbol("Province/State")]) .& (jh_data[!,Symbol("Province/State")].=="Colorado"),:]
 co_data = melt(co_data,names(co_data)[1:4],variable_name = :Date, value_name =:cases)
 co_data.Date = Date.(String.(co_data.Date),"m/d/y") + Year(2000)
-recent_cases = co_data[co_data.Date .== maximum(co_data.Date),:cases]
+recent_cases = co_data[co_data.Date .== maximum(co_data.Date),:cases][1]
 ```
 
 Plot the colorado projection using the most recent case count
@@ -74,7 +74,7 @@ us_data = us_data[.!occursin.(",", us_data[!,Symbol("Province/State")]), :]
 us_data = melt(us_data,names(us_data)[1:4],variable_name = :Date, value_name =:cases)
 us_data.Date = Date.(String.(us_data.Date),"m/d/y") + Year(2000)
 us_data = aggregate(us_data[!,[:Date,:cases]], :Date, sum)
-recent_us_cases = us_data[us_data.Date .== maximum(us_data.Date),:cases_sum]
+recent_us_cases = us_data[us_data.Date .== maximum(us_data.Date),:cases_sum][1]
 ```
 
 Plot the US projection based on the most recent case  count

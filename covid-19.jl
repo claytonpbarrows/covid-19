@@ -45,10 +45,10 @@ jh_data = DataFrame(CSV.read(jh_data_file))
 co_data = jh_data[.!ismissing.(jh_data[!,Symbol("Province/State")]) .& (jh_data[!,Symbol("Province/State")].=="Colorado"),:]
 co_data = melt(co_data,names(co_data)[1:4],variable_name = :Date, value_name =:cases)
 co_data.Date = Date.(String.(co_data.Date),"m/d/y") + Year(2000)
-recent_cases = co_data[co_data.Date .== maximum(co_data.Date),:cases]
+recent_cases = co_data[co_data.Date .== maximum(co_data.Date),:cases][1]
 
 # Plot the colorado projection using the most recent case count
-#nb co plot_covid(Day(60), recent_cases, Day(5))
+#nb plot_covid(Day(60), recent_cases, Day(5))
 co = plot_covid(Day(60), recent_cases, Day(5)) #src
 savefig(co, "CO.html",  :embed) #src
 #md # <iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="./CO.html" height="525" width="100%"></iframe>
@@ -60,7 +60,7 @@ us_data = us_data[.!occursin.(",", us_data[!,Symbol("Province/State")]), :]
 us_data = melt(us_data,names(us_data)[1:4],variable_name = :Date, value_name =:cases)
 us_data.Date = Date.(String.(us_data.Date),"m/d/y") + Year(2000)
 us_data = aggregate(us_data[!,[:Date,:cases]], :Date, sum)
-recent_us_cases = us_data[us_data.Date .== maximum(us_data.Date),:cases_sum]
+recent_us_cases = us_data[us_data.Date .== maximum(us_data.Date),:cases_sum][1]
 
 # Plot the US projection based on the most recent case  count
 #nb plot_covid(Day(100), recent_us_cases, Day(5))
@@ -69,6 +69,6 @@ savefig(us, "US.html", :embed) #src
 #md # <iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="./US.html" height="525" width="100%"></iframe>
 
 using Literate #src
-Literate.notebook("covid-19.jl", ".", execute = false) #src
+Literate.notebook("covid-19.jl", ".") #src
 Literate.markdown("covid-19.jl", ".") #src
 mv("covid-19.md", "README.md", force=true) #src
