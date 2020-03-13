@@ -9,12 +9,16 @@ using DataFrames
 using CSV
 ```
 
+Here is a simple model for calculating cases based on a constatnt doubling time.
+
 ```julia
 function cases(days::Day, current_cases, doubling_time)
     dbl_period = days/doubling_time
     return current_cases * (2 ^ dbl_period)
 end
 ```
+
+Here is a function to generate plotly figures based on the simple virus model parameters.
 
 ```julia
 function plot_covid(days, current_cases, doubling_time = Day(7), hosp_rate = 0.1, death_rate = 0.03)
@@ -33,20 +37,10 @@ end
 - According to [the WHO](https://www.who.int/docs/default-source/coronaviruse/situation-reports/20200306-sitrep-46-covid-19.pdf?sfvrsn=96b04adf_2), the mortality rate of COVID-19 is ~3%.
 - I don't know where the 10% hospitalization rate comes from.
 
-Let's use data from the [WHO]("http://cowid.netlify.com/data/full_data.csv") to get data for the whole world (including the U.S.).
+JHU has put together some more detailed data, and [HDX has put it in a useful format](https://data.humdata.org/dataset/novel-coronavirus-2019-ncov-cases).
 
 ```julia
-who_data_url = "http://cowid.netlify.com/data/full_data.csv"
-who_data_file = download(who_data_url)
-who_data = DataFrame(CSV.read(who_data_file))
-```
-
-Also, JHU has put together some more detailed data
-
-```julia
-jh_data_url = "https://data.humdata.org/hxlproxy/api/data-preview.csv?url=https%3A%2F%2Fraw.githubusercontent.com%2FCSSEGISandData%2FCOVID-19%2Fmaster%2Fcsse_covid_19_data%2Fcsse_covid_19_time_series%2Ftime_series_19-covid-Confirmed.csv"
-jh_data_file = download(jh_data_url)
-jh_data = DataFrame(CSV.read(jh_data_file))
+jh_data = DataFrame(CSV.read(download("https://data.humdata.org/hxlproxy/api/data-preview.csv?url=https%3A%2F%2Fraw.githubusercontent.com%2FCSSEGISandData%2FCOVID-19%2Fmaster%2Fcsse_covid_19_data%2Fcsse_covid_19_time_series%2Ftime_series_19-covid-Confirmed.csv")))
 ```
 
 ## Colorado
