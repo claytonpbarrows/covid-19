@@ -42,7 +42,7 @@ end
 ## COVID-19 parameters
 - According to [this article](https://www.jhsph.edu/news/news-releases/2020/new-study-on-COVID-19-estimates-5-days-for-incubation-period.html), the estimated doubling time of COVID-19 is ~5 days.
 - According to [the WHO](https://www.who.int/docs/default-source/coronaviruse/situation-reports/20200306-sitrep-46-covid-19.pdf?sfvrsn=96b04adf_2), the mortality rate of COVID-19 is ~3%.
-- I don't know where the 10% hospitalization rate comes from.
+- The 10% hospitalization rate comes from [this article](https://www.statnews.com/2020/03/10/simple-math-alarming-answers-covid-19/), but the sources for that figure in the article are dubious at best.
 
 JHU has put together some more detailed data, and [HDX has put it in a useful format](https://data.humdata.org/dataset/novel-coronavirus-2019-ncov-cases).
 
