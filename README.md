@@ -42,11 +42,11 @@ end
 Here is a function to generate plotly figures based on the simple virus model parameters.
 
 ```julia
-function plot_covid(days, current_cases, doubling_time = Day(7), hosp_rate = 0.1, death_rate = 0.03)
+function plot_covid(days, current_cases, doubling_time = Day(7), hosp_rate = 0.1, death_rate = 0.03, recovery_time = Day(10))
     td = today()
     dates = td:doubling_time:(td+days)
     cumulative_cases = [cases(d-td, current_cases, doubling_time) for d in dates]
-    instant_cases, instant_hosp = instantanious_cases(dates, cumulative_cases, hosp_rate, death_rate, Day(10))
+    instant_cases, instant_hosp = instantanious_cases(dates, cumulative_cases, hosp_rate, death_rate, recovery_time)
     total_cases = scatter(x = dates, y = cumulative_cases, name = "Cumulative Infections")
     #total_hosp = scatter(x = dates, y = cumulative_cases.*hosp_rate, name = "Cumulative Hospitalizations")
     total_deaths = scatter(x = dates, y = cumulative_cases.*death_rate, name = "Cumulative Deaths")
