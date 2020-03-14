@@ -19,9 +19,23 @@ using CSV
 A simple model for calculating cases based on a constatnt doubling time:
 
 ```julia
-function cases(days::Day, current_cases, doubling_time)
+function cases(days::Day, current_cases, doubling_time::Day)
     dbl_period = days/doubling_time
     return current_cases * (2 ^ dbl_period)
+end
+```
+
+A simple model for calculating instantanious case load given a recovery time:
+*note that the instantaneous case calculation assumes that the death time is the same as the recovry time*
+
+```julia
+function instantanious_cases(dates, cumulative_cases, hosp_rate, death_rate, recovery_time)
+    recovery_dates = dates .+ recovery_time
+    recovery_lag = length(dates[dates .< recovery_dates[1]])
+    recovered_cases = vcat(zeros(recovery_lag), cumulative_cases[1:end-recovery_lag])
+    instant_cases = cumulative_cases - recovered_cases - recovered_cases .* death_rate
+    instant_hosp = instant_cases .* hosp_rate
+    return instant_cases, instant_hosp
 end
 ```
 
@@ -31,11 +45,14 @@ Here is a function to generate plotly figures based on the simple virus model pa
 function plot_covid(days, current_cases, doubling_time = Day(7), hosp_rate = 0.1, death_rate = 0.03)
     td = today()
     dates = td:doubling_time:(td+days)
-    case_count = [cases(d-td, current_cases, doubling_time) for d in dates]
-    total_cases = scatter(x = dates, y = case_count, name = "Infections")
-    hosp = scatter(x = dates, y = case_count.*hosp_rate, name = "Hospitalizations")
-    deaths = scatter(x = dates, y = case_count.*death_rate, name = "Deaths")
-    plot([total_cases, hosp, deaths])
+    cumulative_cases = [cases(d-td, current_cases, doubling_time) for d in dates]
+    instant_cases, instant_hosp = instantanious_cases(dates, cumulative_cases, hosp_rate, death_rate, Day(10))
+    total_cases = scatter(x = dates, y = cumulative_cases, name = "Cumulative Infections")
+    #total_hosp = scatter(x = dates, y = cumulative_cases.*hosp_rate, name = "Cumulative Hospitalizations")
+    total_deaths = scatter(x = dates, y = cumulative_cases.*death_rate, name = "Cumulative Deaths")
+    inst_cases = scatter(x = dates, y = instant_cases, name = "Instantanious Infections")
+    inst_hosp = scatter(x = dates, y= instant_hosp, name = "Instantanious Hospitalizations")
+    plot([total_cases, total_deaths, inst_cases, inst_hosp])
 end
 ```
 
@@ -60,7 +77,12 @@ co_data.Date = Date.(String.(co_data.Date),"m/d/y") + Year(2000)
 recent_cases = co_data[co_data.Date .== maximum(co_data.Date),:cases][1]
 ```
 
-Plot the colorado projection using the most recent case count
+Plot the colorado projection using the most recent case count:
+
+```julia
+plot_covid(Day(60), recent_cases, Day(5))
+```
+
 <iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="./CO.html" height="525" width="100%"></iframe>
 
 ## US
@@ -75,7 +97,12 @@ us_data = aggregate(us_data[!,[:Date,:cases]], :Date, sum)
 recent_us_cases = us_data[us_data.Date .== maximum(us_data.Date),:cases_sum][1]
 ```
 
-Plot the US projection based on the most recent case  count
+Plot the US projection based on the most recent case  count:
+
+```julia
+plot_covid(Day(60), recent_us_cases, Day(5))
+```
+
 <iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="./US.html" height="525" width="100%"></iframe>
 
 ---
