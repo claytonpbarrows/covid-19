@@ -1,6 +1,6 @@
 # COVID-19 Analysis
 Checkout the [webpage with live plots](https://claytonpbarrows.github.io/covid-19/).
-And if you're intereested:
+And if you're interested:
 - [the github repository](https://github.com/claytonpbarrows/covid-19/).
 - [the notebook](https://nbviewer.jupyter.org/github/claytonpbarrows/covid-19/blob/master/covid-19.ipynb).
 - And if you want to run the notebook interactively through binder (slow), you can do so [here](https://mybinder.org/v2/gh/claytonpbarrows/covid-19/master/).
@@ -16,7 +16,7 @@ using DataFrames
 using CSV
 ```
 
-A simple model for calculating cases based on a constatnt doubling time:
+A simple model for calculating cases based on a constant doubling time:
 
 ```julia
 function cases(days::Day, current_cases, doubling_time::Day)
@@ -25,8 +25,8 @@ function cases(days::Day, current_cases, doubling_time::Day)
 end
 ```
 
-A simple model for calculating instantanious case load given a recovery time:
-*note that the instantaneous case calculation assumes that the death time is the same as the recovry time*
+A simple model for calculating instantaneous case load given a recovery time:
+*note that the instantaneous case calculation assumes that the death time is the same as the recovery time*
 
 ```julia
 function instantanious_cases(dates, cumulative_cases, hosp_rate, death_rate, recovery_time)
@@ -50,8 +50,8 @@ function plot_covid(days, current_cases, doubling_time = Day(7), hosp_rate = 0.1
     total_cases = scatter(x = dates, y = cumulative_cases, name = "Cumulative Infections")
     #total_hosp = scatter(x = dates, y = cumulative_cases.*hosp_rate, name = "Cumulative Hospitalizations")
     total_deaths = scatter(x = dates, y = cumulative_cases.*death_rate, name = "Cumulative Deaths")
-    inst_cases = scatter(x = dates, y = instant_cases, name = "Instantanious Infections")
-    inst_hosp = scatter(x = dates, y= instant_hosp, name = "Instantanious Hospitalizations")
+    inst_cases = scatter(x = dates, y = instant_cases, name = "Instantaneous Infections")
+    inst_hosp = scatter(x = dates, y= instant_hosp, name = "Instantaneous Hospitalizations")
     plot([total_cases, total_deaths, inst_cases, inst_hosp])
 end
 ```
